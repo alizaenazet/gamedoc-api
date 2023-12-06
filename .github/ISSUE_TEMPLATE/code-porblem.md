@@ -1,7 +1,7 @@
 ---
-name: Code porblem
+name: Code problem
 about: Jelaskan permalasahan kamu disini
-title: HELP
+title: [HELP] 
 labels: ''
 assignees: ''
 
