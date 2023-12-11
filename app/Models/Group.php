@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+
 
 class Group extends Model
 {
@@ -16,4 +19,12 @@ class Group extends Model
         "image_url",
         "price"
     ];
+
+    public function socialMedias() : MorphMany {
+        return $this->morphMany(SocialMedia::class,'socialMediaable');
+    }
+
+    public function doctors() : BelongsToMany {
+        return $this->belongsToMany(Doctor::class);
+    }
 }
