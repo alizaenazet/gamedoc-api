@@ -19,17 +19,14 @@ return new class extends Migration
             $table->string('phone_number');
             $table->string('image_url');
             $table->date('dob');
+            $table->enum('role',['doctor','gamer']);
             $table->rememberToken();
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
         });
     }
 
-    // $table->uuid('id')->primary();
-    //         $table->foreignUuid('user_id')
-    //             ->constrained('users')
-    //             ->onDelete('cascade')
-    //             ->onUpdate('cascade');
+    
     /**
      * Reverse the migrations.
      */

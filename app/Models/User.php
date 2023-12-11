@@ -26,7 +26,8 @@ class User extends Authenticatable
         'password',
         'phone_number',
         'dob',
-        'image_url'
+        'image_url',
+        'role'
     ];
 
     public function doctor() : HasOne {

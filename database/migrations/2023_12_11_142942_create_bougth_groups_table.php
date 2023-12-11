@@ -13,8 +13,14 @@ return new class extends Migration
     {
         Schema::create('bougth_groups', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('gamer_id');
-            $table->foreignUuid('group_id');
+            $table->foreignUuid('gamer_id')
+            ->constrained('gamers')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+            $table->foreignUuid('group_id')
+            ->constrained('groups')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
             $table->timestamps();
         });
     }
