@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('groups', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('doctor_id')
-                ->constrained('users')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
             $table->string('name');
             $table->string('description');
             $table->string('image_url');
             $table->decimal('price',10,2);
+            $table->foreignUuid('doctor_id')
+                ->constrained('users')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
             $table->timestamps();
         });
     }
