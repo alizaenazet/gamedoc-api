@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('bougth_groups', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->uuid('id')->primary()->default(DB::raw('(UUID())'));
             $table->foreignUuid('gamer_id')
-            ->constrained('gamers')
+            ->constrained('users')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
             $table->foreignUuid('group_id')
