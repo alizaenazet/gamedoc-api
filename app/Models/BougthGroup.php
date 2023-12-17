@@ -11,7 +11,7 @@ class BougthGroup extends Model
 {
     use HasFactory, HasUlids;
 
-    public function gamer() : BelongsToMany {
-       return $this->BelongsToMany(Gamer::class);
-    }
+    // public function gamer() : BelongsToMany {
+    //    return $this->BelongsToMany(Gamer::class);
+    // }
 }
