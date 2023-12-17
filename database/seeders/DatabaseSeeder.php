@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Doctor;
 use App\Models\Gamer;
+use App\Models\Group;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -29,7 +30,9 @@ class DatabaseSeeder extends Seeder
             ->state(function ()  {
                 return ['role' => 'doctor'];
             })
-            ->has(Doctor::factory()->count(1),"doctor")
+            ->has(Doctor::factory()
+            ->count(1)->has(Group::factory()->count(3))
+            ,"doctor")
             ->create();
         
         
