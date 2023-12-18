@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('health_reports', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->uuid('id')->primary()->default(DB::raw('(UUID())'));;
             $table->foreignUuid('gamer_id')
                 ->constrained('gamers')
                 ->onDelete('cascade')
