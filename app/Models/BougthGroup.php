@@ -11,6 +11,11 @@ class BougthGroup extends Model
 {
     use HasFactory, HasUlids;
 
+    protected $fillable = [
+        "gamer_id",
+        "group_id"
+    ];
+
     // public function gamer() : BelongsToMany {
     //    return $this->BelongsToMany(Gamer::class);
     // }

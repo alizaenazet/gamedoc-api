@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BougthGroup;
 use App\Models\Group;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
@@ -24,8 +25,8 @@ class TransactionController extends Controller
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'group_id' => ['required'],
-            'total' => ['required'],
+            'group_id' => 'required',
+            'total' => 'required',
             'group_name' => 'required'
         ]);
 
@@ -111,9 +112,20 @@ class TransactionController extends Controller
         $update = Transaction::where('id',$request['order_id'])
             ->update(['status' => $request['transaction_status']]);
 
-        if ($update < 1) {
-            return response()->noContent(404);
-        }
+            if ($update < 1) {
+                return response()->noContent(404);
+            }
+            $isPaid = $request['transaction_status'] == "capture" || $request['transaction_status'] == "settlement" || $request['transaction_status'] == "accept";
+            
+            if ($isPaid) {
+                // Take transaction information
+                $transaction = Transaction::find($request['order_id']);
+                // Insert to bought group
+                $addBoughtGroup = BougthGroup::create([
+                    "gamer_id" => $transaction->gamer_id,
+                    "group_id" => $transaction->group_id
+                ]);
+            }
 
         return response()->noContent(200);
     }
