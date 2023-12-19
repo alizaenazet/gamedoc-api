@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('phone_number');
-            $table->string('image_url');
+            $table->string('image_url')->nullable();
             $table->date('dob');
             $table->enum('role',['doctor','gamer']);
             $table->rememberToken();
