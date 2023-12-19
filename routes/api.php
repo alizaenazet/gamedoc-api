@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\GamerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,3 +23,5 @@ Route::middleware('auth:sanctum')->get('/token-tes', function (Request $request)
 Route::post('/login', [UserController::class,'login'])->name('login');
 
 Route::middleware('auth:sanctum')->post('/logout',[UserController::class,'logout']);
+
+Route::get('/gamers', [GamerController::class,'index']);

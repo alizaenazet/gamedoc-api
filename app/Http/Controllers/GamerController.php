@@ -12,7 +12,8 @@ class GamerController extends Controller
      */
     public function index()
     {
-        //
+        $gamers = Gamer::all();
+        return response()->json($gamers);
     }
 
     /**
