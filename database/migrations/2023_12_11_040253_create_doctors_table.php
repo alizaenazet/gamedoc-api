@@ -18,9 +18,9 @@ return new class extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
             $table->enum('profession',['pyscholog','psikiater','fisioterapis','social worker']);
-            $table->enum('service',['personal','group']);
+            $table->set('services',['personal','group']);
             $table->string('degree');
-            $table->double('rating');
+            $table->double('rating')->default(0.0);
             $table->timestamps();
         });
     }
