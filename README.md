@@ -1,4 +1,4 @@
-# Webiste Perusahaan event organizer Abadicomm Surabaya.
+# API FOR GAMEDOC VP ALP KEL.8
 
 ## Code of conduct
 
@@ -13,9 +13,10 @@
 
 ### How to run
 - open terminal of the project
-- npm install
 - composer install
 - cp .env.example .env
 - php artisan key:generate
 - php artisan serve
-- npm run dev
+- composer require laravel/sanctum
+- php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
+- php artisan migrate
