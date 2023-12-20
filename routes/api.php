@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\GamerController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use App\Models\Transaction;
@@ -36,3 +37,7 @@ Route::middleware('auth:sanctum')->get('/groups/{groupid}/order',[TransactionCon
 
 // Doctors
 Route::post('/doctors/register',[DoctorController::class,'create']);
+
+
+// Gamer
+Route::post('/gamers/register',[GamerController::class,'create']);

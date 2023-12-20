@@ -31,7 +31,7 @@ class DoctorController extends Controller
         $validator = Validator::make($request->all(), [
             'username' => 'required',
             'password' => 'required:min:8',
-            'email' => 'required|email',
+            'email' => 'required|unique:users|email',
             'dob' => 'required|date',
             'phone_number' => 'required|starts_with:628|min:10|max:16',
             'degree' => 'required',
