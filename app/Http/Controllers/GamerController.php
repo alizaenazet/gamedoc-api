@@ -23,6 +23,7 @@ class GamerController extends Controller
             return response()->json(['message' => 'Unauthorized', 'errors' => $validator->errors()], 401);
         }
         $user = $request->user();
+
         // Return a JSON response with the gamer data and a success message
         return response()->json([
             'id' => $user->id,
