@@ -22,22 +22,15 @@ class GamerController extends Controller
         if ($validator->fails()) {
             return response()->json(['message' => 'Unauthorized', 'errors' => $validator->errors()], 401);
         }
-        // Fetch the specific gamer using the provided ID
-        $gamer = Gamer::find($request->input('id'));
-
-        // Check if the gamer exists
-        if (!$gamer) {
-            return response()->json(['message' => 'Gamer not found'], 404);
-        }
-
+        $user = $request->user();
         // Return a JSON response with the gamer data and a success message
         return response()->json([
-            'id' => $gamer->id,
-            'name' => $gamer->name,
-            'dob' => $gamer->dob,
-            'email' => $gamer->email,
-            'phone_number' => $gamer->phone_number,
-            'image_url' => $gamer->image_url,
+            'id' => $user->id,
+            'name' => $user->name,
+            'dob' => $user->dob,
+            'email' => $user->email,
+            'phone_number' => $user->phone_number,
+            'image_url' => $user->image_url,
         ], 200);
     }
 
