@@ -12,9 +12,33 @@ class GamerController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        // Validate the request
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|uuid',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Unauthorized', 'errors' => $validator->errors()], 401);
+        }
+        // Fetch the specific gamer using the provided ID
+        $gamer = Gamer::find($request->input('id'));
+
+        // Check if the gamer exists
+        if (!$gamer) {
+            return response()->json(['message' => 'Gamer not found'], 404);
+        }
+
+        // Return a JSON response with the gamer data and a success message
+        return response()->json([
+            'id' => $gamer->id,
+            'name' => $gamer->name,
+            'dob' => $gamer->dob,
+            'email' => $gamer->email,
+            'phone_number' => $gamer->phone_number,
+            'image_url' => $gamer->image_url,
+        ], 200);
     }
 
     /**
@@ -29,7 +53,7 @@ class GamerController extends Controller
             'phone_number' => 'required|starts_with:628|min:10|max:16',
             'dob' => 'required|date',
         ]);
-        
+
         if ($validator->fails()) {
             return response()->json($validator->errors(),422);
         }

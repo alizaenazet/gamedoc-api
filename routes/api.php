@@ -41,3 +41,4 @@ Route::post('/doctors/register',[DoctorController::class,'create']);
 
 // Gamer
 Route::post('/gamers/register',[GamerController::class,'create']);
+Route::middleware('auth:sanctum')->get('/gamers',[GamerController::class,'index']);
