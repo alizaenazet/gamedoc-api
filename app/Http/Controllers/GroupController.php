@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Group;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\File;
+use Illuminate\Support\Facades\Storage;
 
 class GroupController extends Controller
 {
@@ -59,6 +61,45 @@ class GroupController extends Controller
         }
 
         return response()->noContent(204);
+    }
+
+    public function updateImage(Request $request,string $groupid,) {
+        $validator = Validator::make($request->all(), [
+            'image_file' => [
+                'required',
+                File::types(['png','jpg','jpeg'])
+                    ->max('25mb')
+            ]
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(),422);
+        }
+
+        $group = Group::find($groupid);
+        if (empty($group)) {
+            return response()->noContent(404);
+        }
+
+        $deleteImagePath = str_replace("/storage/",'',$group->image_url);
+        if (!empty($group->image_url)) {
+            if (!Storage::disk('public')->delete($deleteImagePath)) {
+                return response()->json("failed to delete existing image",500);
+            }
+        }
+
+        $file = $request->file('image_file');
+        $imageUrl = '/storage/'. $file->storePublicly('groups', 'public');
+
+
+        $group->image_url = $imageUrl;
+
+        if ($group->save()) {
+            return response()->noContent(204);
+        }
+
+        return response()->json("failed to update image url",500);
+        
     }
 
     /**
