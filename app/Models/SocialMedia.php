@@ -12,7 +12,6 @@ class SocialMedia extends Model
     use HasFactory,HasUuids;
 
     protected $fillable = [
-        'type',
         'name',
         'url',
     ];
