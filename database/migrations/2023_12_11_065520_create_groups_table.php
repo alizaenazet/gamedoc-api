@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('groups', function (Blueprint $table) {
             $table->uuid('id')->primary()->default(DB::raw('(UUID())'));;
             $table->string('name');
-            $table->string('description');
-            $table->string('image_url');
+            $table->string('description')->nullable();
+            $table->string('image_url')->nullable();
             $table->decimal('price',10,2);
             $table->timestamps();
         });
