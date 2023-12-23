@@ -8,7 +8,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\File;
 use App\Enums\Proffesion;
+use Illuminate\Support\Facades\Storage;
+
 
 
 
@@ -68,6 +71,39 @@ class DoctorController extends Controller
         return response()->noContent(201);
     }
 
+    public function changeImage(Request $request) {
+        
+        $validator = Validator::make($request->all(), [
+            'image_file' => [
+                'required',
+                File::types(['png','jpg','jpeg'])
+                    ->max('25mb')
+            ]
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(),422);
+        }
+        
+        $user = $request->user();
+        if (!empty($group->image_url)) {
+            $deleteImagePath = str_replace("/storage/",'',$user->image_url);
+            if (!Storage::disk('public')->delete($deleteImagePath)) {
+                return response()->json("failed to delete existing image",500);
+            }
+        }
+
+        $file = $request->file('image_file');
+        $imageUrl = '/storage/'. $file->storePublicly('users', 'public');
+
+        $user->image_url = $imageUrl;
+     
+        if ($user->save()) {
+            return response()->noContent(204);
+        }
+
+        return response()->json("failed to update image url",500);
+    }
     /**
      * Store a newly created resource in storage.
      */

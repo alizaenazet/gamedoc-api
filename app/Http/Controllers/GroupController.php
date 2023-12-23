@@ -81,8 +81,8 @@ class GroupController extends Controller
             return response()->noContent(404);
         }
 
-        $deleteImagePath = str_replace("/storage/",'',$group->image_url);
         if (!empty($group->image_url)) {
+            $deleteImagePath = str_replace("/storage/",'',$group->image_url);
             if (!Storage::disk('public')->delete($deleteImagePath)) {
                 return response()->json("failed to delete existing image",500);
             }
