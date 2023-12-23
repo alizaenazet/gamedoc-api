@@ -35,6 +35,7 @@ Route::post('/order/payment-handler',[TransactionController::class,'notifHandler
 
 // Group
 Route::middleware('auth:sanctum')->get('/groups/{groupid}/order',[TransactionController::class,'show']);
+Route::middleware('auth:sanctum')->post('/groups/{groupid}/profile/update',[GroupController::class,'updateImage']);
 
 // Doctors
 Route::post('/doctors/register',[DoctorController::class,'create']);
