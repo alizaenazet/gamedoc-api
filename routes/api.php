@@ -36,11 +36,11 @@ Route::post('/order/payment-handler',[TransactionController::class,'notifHandler
 // Group
 Route::middleware('auth:sanctum')->get('/groups/{groupid}/order',[TransactionController::class,'show']);
 Route::middleware('auth:sanctum')->post('/groups/{groupid}/profile/update',[GroupController::class,'updateImage']);
+Route::middleware('auth:sanctum')->post('/groups',[GroupController::class,'create']);
 
 // Doctors
 Route::post('/doctors/register',[DoctorController::class,'create']);
-Route::middleware('auth:sanctum')->post('/groups',[GroupController::class,'create']);
-
+Route::middleware('auth:sanctum')->post('/doctors/update/image',[DoctorController::class,'changeImage']);
 
 // Gamer
 Route::post('/gamers/register',[GamerController::class,'create']);
