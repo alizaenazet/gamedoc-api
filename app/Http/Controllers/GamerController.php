@@ -14,14 +14,6 @@ class GamerController extends Controller
      */
     public function index(Request $request)
     {
-        // Validate the request
-        $validator = Validator::make($request->all(), [
-            'id' => 'required|uuid',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['message' => 'Unauthorized', 'errors' => $validator->errors()], 401);
-        }
         $user = $request->user();
 
         // Return a JSON response with the gamer data and a success message
