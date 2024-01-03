@@ -42,6 +42,7 @@ Route::middleware('auth:sanctum')->post('/groups',[GroupController::class,'creat
 Route::post('/doctors/register',[DoctorController::class,'create']);
 Route::middleware('auth:sanctum')->post('/doctors/update/image',[DoctorController::class,'changeImage']);
 Route::middleware('auth:sanctum')->get('/doctors',[DoctorController::class,'index']);
+Route::middleware('auth:sanctum')->get('/doctors/{doctorid}/preview',[DoctorController::class,'show']);
 
 // Gamer
 Route::post('/gamers/register',[GamerController::class,'create']);
