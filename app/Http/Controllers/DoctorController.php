@@ -22,7 +22,16 @@ class DoctorController extends Controller
      */
     public function index()
     {
-        //
+        $users =  DB::table('users')
+            ->join('doctors','users.id', '=', 'user_id')
+            ->select('users.id','users.image_url','users.name','doctors.profession','doctors.service as services')
+        ->get();
+        
+        $users = $users->map(function ($item, int $key) {
+            $item->services = explode(',',$item->services);
+            return $item;
+        });
+        return response()->json($users,200);
     }
 
     /**
