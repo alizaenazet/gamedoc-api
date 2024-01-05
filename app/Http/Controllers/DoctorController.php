@@ -131,9 +131,85 @@ class DoctorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Doctor $doctor)
+    public function update(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            "name" => 'nullable',
+            "profession" => 'nullable',
+            "services" => 'nullable',
+            "email" => 'nullable|email',
+            "deletedSocialMediaId" => 'nullable',
+            "social_media" => 'nullable',
+            "social_media.*.name" => 'required',
+            "social_media.*.url" => 'required',
+        ]);
+        $user = $request->user();
+        $doctor = Doctor::where('user_id',$user->id)->first();
+        if (empty($doctor)) {
+            return response()->noContent(401);
+        }
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(),422);
+        }
+        $doctor = Doctor::where('user_id',$user->id)->first();
+
+        $validated = $validator->validated();
+
+        if (!empty($validated['name'])) {
+            $user->name = $validated['name'];
+        }
+
+        if (!empty($validated['profession'])) {
+            $doctor->profession = $validated['profession'];
+        }
+        
+        if (!empty($validated['services'])) {
+            $doctor->service = $validated['services'];
+        }
+        
+        if (!empty($validated['email'])) {
+            $user->email = $validated['email'];
+        }
+        if (!empty($validated['services'])) {
+            if (count($validated['services']) > 1) {
+                $validated['services'] = implode(",",$validated['services']);
+            }else {
+                $validated['services'] = $validated['services'][0];
+            }
+            $doctor->service = $validated['services'];
+        }
+
+        if (!empty($validated['deletedSocialMediaId'])) {
+            DB::table('social_media')->whereIn('id',$validated['deletedSocialMediaId'])->delete();
+        }
+
+        if (!empty($validated['social_media'])) {
+            $socialMediaList = $doctor->socialMedias;
+
+            for ($i=0; $i < count($validated['social_media']); $i++) { 
+                $socialMedia = $validated['social_media'][$i];
+                if ($socialMediaList->contains('name',$socialMedia['name'])) {
+                    DB::table('social_media')
+                     ->where('name',$socialMedia['name'])
+                     ->where('socialMediaable_id', $doctor->id)
+                     ->update($socialMedia);
+
+                }else{
+                $doctor->socialMedias()->createMany($validated['social_media']);
+                break;
+                }
+            }
+
+        }
+        
+        if (!$doctor->save()) {
+            return response()->noContent(500);
+        }
+        if (!$user->save()) {
+            return response()->noContent(500);
+        }
+        return "sukses";
     }
 
     /**
