@@ -26,7 +26,7 @@ class DoctorController extends Controller
             ->join('doctors','users.id', '=', 'user_id')
             ->select('users.id','users.image_url','users.name','doctors.profession','doctors.service as services')
         ->get();
-        
+
         $users = $users->map(function ($item, int $key) {
             $item->services = explode(',',$item->services);
             return $item;
@@ -124,9 +124,27 @@ class DoctorController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Doctor $doctor)
+    public function show(string $userid)
     {
-        //
+        $user = User::find($userid);
+        if (empty($user)) {
+            return response()->noContent(404);
+        }
+        $doctor = $user->doctor;
+        $socialMediaList = DB::table('social_media')
+            ->select('id','name','url')
+            ->where('socialMediaable_id',$doctor->id)
+            ->get();
+        $response = [
+            "id" => $user->id,
+            "image_url" => $user->image_url,
+            "name" => $user->name,
+            "profession" => $doctor->profession,
+            "services" => explode(',',$doctor->service),
+            'rating' => $doctor->rating,
+            "social_media" => $socialMediaList
+        ];
+        return response()->json($response,200);
     }
 
     /**
