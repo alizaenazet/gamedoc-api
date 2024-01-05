@@ -3,6 +3,7 @@
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\GamerController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\HealthReportController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use App\Models\Transaction;
@@ -49,3 +50,4 @@ Route::middleware('auth:sanctum')->get('/doctors/{doctorid}/preview',[DoctorCont
 // Gamer
 Route::post('/gamers/register',[GamerController::class,'create']);
 Route::middleware('auth:sanctum')->post('gamers/doctor-favorites/{doctorid}',[GamerController::class,'addFavoriteDoctor']);
+Route::middleware('auth:sanctum')->put('gamers/healt-report',[HealthReportController::class,'updateHealthReport']);
