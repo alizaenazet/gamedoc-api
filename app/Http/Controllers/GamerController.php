@@ -90,19 +90,20 @@ class GamerController extends Controller
     {
         //
     }
-    public function healthReport(Request $request)
+    public function GetHealthReport($gamerId)
     {
-        $user = $request->user();
-        if (!$user) {
-            return response()->json(['message' => 'Unauthorized'], 401);
+
+        $gamer = Gamer::find($gamerId);
+
+        if (!$gamer) {
+            return response()->json(['message' => 'Gamer not found'], 404);
         }
 
-        $healthReport = $user->gamer->healthReport;
+        $healthReport = $gamer->healthReport;
 
         if (!$healthReport) {
             return response()->json(['message' => 'Health report not found'], 404);
         }
-
         return response()->json([
             'fisik' => $healthReport->fisik,
             'mental' => $healthReport->mental,
