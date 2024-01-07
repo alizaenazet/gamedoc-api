@@ -2,31 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Doctor;
-use App\Models\FavoriteDoctor;
 use App\Models\Gamer;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpFoundation\Response;
 
 class GamerController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        $user = $request->user();
-
-        // Return a JSON response with the gamer data and a success message
-        return response()->json([
-            'id' => $user->id,
-            'name' => $user->name,
-            'dob' => $user->dob,
-            'email' => $user->email,
-            'phone_number' => $user->phone_number,
-            'image_url' => $user->image_url,
-        ], 200);
+        //
     }
 
     /**
@@ -80,9 +69,43 @@ class GamerController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Gamer $gamer)
+    public function edit(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'username' => 'sometimes|required',
+            'password' => 'sometimes|min:8',
+            'email' => 'sometimes|required|email|unique:users,email,' . $id,
+            'phone_number' => 'sometimes|required|starts_with:628|min:10|max:16',
+            'dob' => 'sometimes|required|date',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        $user->name = $request->input('username');
+        $user->email = $request->input('email');
+
+        if ($request->has('password')) {
+            $user->password = bcrypt($request->input('password'));
+        }
+
+        $user->phone_number = $request->input('phone_number');
+        $user->dob = $request->input('dob');
+
+        $user->save();
+
+        return response()->json([
+            'status' => Response::HTTP_OK,
+            'message' => 'Success',
+            'data' => $user,
+        ]);
     }
 
     /**
@@ -99,58 +122,5 @@ class GamerController extends Controller
     public function destroy(Gamer $gamer)
     {
         //
-    }
-    public function GetHealthReport($gamerId)
-    {
-
-        $gamer = Gamer::find($gamerId);
-
-        $healthReport = $gamer->healthReport;
-
-        if (!$healthReport) {
-            return response()->json()->setStatusCode(404);
-        }
-        return response()->json([
-            'fisik' => $healthReport->fisik,
-            'mental' => $healthReport->mental,
-            'sosial' => $healthReport->sosial,
-            'berhenti_bermain' => $healthReport->berhenti_bermain,
-            'motivasi_beraktivitas' => $healthReport->motivasi_beraktivitas,
-            'nyeri_tulang_sendi' => $healthReport->nyeri_tulang_sendi,
-            'keluhan_mengganggu_aktivitas' => $healthReport->keluhan_mengganggu_aktivitas,
-            'nyaman_menghabiskan_waktu_untuk_game' => $healthReport->nyaman_menghabiskan_waktu_untuk_game,
-            'kesulitan_bersosialisasi_keluhan_gamer' => $healthReport->kesulitan_bersosialisasi_keluhan_gamer,
-            'gangguan_tidur' => $healthReport->gangguan_tidur,
-            'durasi_bermain' => $healthReport->durasi_bermain,
-            'bersalah_berlebihan_bermain' => $healthReport->bersalah_berlebihan_bermain,
-        ], 200);
-    }
-
-    public function addFavoriteDoctor(Request $request, string $doctorId)
-    {
-        $doctor = Doctor::find($doctorId);
-        if (empty($doctor)) {
-            return response()->noContent(404);
-        }
-        $gamer = $request->user()->gamer;
-
-        $alredyRelation = FavoriteDoctor::where('gamer_id', $gamer->id)
-            ->where('doctor_id', $doctorId)
-            ->get();
-
-        if (count($alredyRelation) >= 1) {
-            return response()->noContent(400);
-        }
-
-        $addRelation = FavoriteDoctor::create([
-            'doctor_id' => $doctorId,
-            'gamer_id' => $gamer->id
-        ]);
-
-        if (!empty($addRelation)) {
-            return response()->noContent(200);
-        }
-
-        return response()->noContent(500);
     }
 }
