@@ -95,14 +95,14 @@ class GamerController extends Controller
 
         $gamer = Gamer::find($gamerId);
 
-        if (!$gamer) {
-            return response()->json(['message' => 'Gamer not found'], 404);
-        }
+        // if (!$gamer) {
+        //     return response()->json(['message' => 'Gamer not found'], 404);
+        // }
 
         $healthReport = $gamer->healthReport;
 
         if (!$healthReport) {
-            return response()->json(['message' => 'Health report not found'], 404);
+            return response()->json(['message' => 'Health report not found'], 401);
         }
         return response()->json([
             'fisik' => $healthReport->fisik,
