@@ -17,18 +17,18 @@ return new class extends Migration
                 ->constrained('gamers')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-            $table->string('fisik')->nullable();
-            $table->string('mental')->nullable();
-            $table->string('sosial')->nullable();
-            $table->string('berhenti_bermain')->nullable();
-            $table->string('motivasi_beraktivitas')->nullable();
-            $table->string('nyeri_tulang_sendi')->nullable();
-            $table->string('keluhan_menggangu_aktivitas')->nullable();
-            $table->string('nyaman_menghabiskan_waktu_untuk_game')->nullable();
-            $table->string('kesulitan_bersosialiasi')->nullable();
+            $table->string('fisik',1506)->nullable()->default('');
+            $table->string('mental',1506)->nullable()->default('');
+            $table->string('sosial',1506)->nullable()->default('');
+            $table->string('berhenti_bermain',1506)->nullable()->default('');
+            $table->string('motivasi_beraktivitas',1506)->nullable()->default('');
+            $table->string('nyeri_tulang_sendi',1506)->nullable()->default('');
+            $table->string('keluhan_menggangu_aktivitas',1506)->nullable()->default('');
+            $table->string('nyaman_menghabiskan_waktu_untuk_game',1506)->nullable()->default('');
+            $table->string('kesulitan_bersosialiasi',1506)->nullable()->default('');
             $table->set('keluhan_gamer',['mental','fisik','sosial']);
-            $table->boolean('isgangguan_tidur');
-            $table->boolean('isbersalah_berlebihan_bermain');
+            $table->boolean('isgangguan_tidur')->default(false);
+            $table->boolean('isbersalah_berlebihan_bermain')->default(false);;;
             $table->integer('durasi_bermain');
             $table->timestamps();
         });

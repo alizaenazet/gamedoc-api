@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Doctor;
+use App\Models\FavoriteDoctor;
 use App\Models\Gamer;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -97,5 +99,32 @@ class GamerController extends Controller
     public function destroy(Gamer $gamer)
     {
         //
+    }
+
+    public function addFavoriteDoctor(Request $request ,string $doctorId) {
+        $doctor = Doctor::find($doctorId);
+        if (empty($doctor)) {
+            return response()->noContent(404);
+        }
+        $gamer = $request->user()->gamer;
+
+        $alredyRelation = FavoriteDoctor::where('gamer_id',$gamer->id)
+            ->where('doctor_id',$doctorId)
+            ->get();
+
+        if (count($alredyRelation) >= 1) {
+            return response()->noContent(400);
+        }
+
+        $addRelation = FavoriteDoctor::create([
+            'doctor_id' => $doctorId,
+            'gamer_id' => $gamer->id
+        ]);
+
+        if (!empty($addRelation)) {
+            return response()->noContent(200);
+        }
+
+        return response()->noContent(500);
     }
 }

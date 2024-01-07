@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('social_medias', function (Blueprint $table) {
+        Schema::create('social_media', function (Blueprint $table) {
             $table->uuid('id')->primary()->default(DB::raw('(UUID())'));
             $table->string("name");
             $table->string("url");
-            $table->uuidMorphs('social_mediaable');
+            $table->uuidMorphs('socialMediaable');
             $table->timestamps();
         });
     }

@@ -76,7 +76,7 @@ class TransactionController extends Controller
         }
 
         $newTransactionData = $res->collect();
-        Transaction::create([
+       $transaction = Transaction::create([
             'id' => $newTransactionId,
             'gamer_name' => $user['name'],
             'group_name' => $request['group_name'],
@@ -85,6 +85,9 @@ class TransactionController extends Controller
             'group_id' => $request['group_id'],
             'token' => $newTransactionData['token']
         ]);
+
+        return $transaction;
+
 
         
         return response()->json([
@@ -151,12 +154,15 @@ class TransactionController extends Controller
             return response()->noContent(404);
         }
 
+        $expiredTime = $this->addAnHourDateTime($transaction['created_at']);
+
         return response()->json([
             "id" => $transaction->id,
             'gamer_name' => $transaction->gamer_name,
             "group_name" => $transaction->group_name,
             "status" => $transaction->status,
-            "redirect_url" => "https://app.sandbox.midtrans.com/snap/v3/redirection/".$transaction->token
+            "redirect_url" => "https://app.sandbox.midtrans.com/snap/v3/redirection/".$transaction->token,
+            "expired_time" => $expiredTime
         ],200);
     }
 
@@ -183,4 +189,24 @@ class TransactionController extends Controller
     {
         //
     }
+
+    function addAnHourDateTime(string $datetime): array
+{
+    // Memisahkan tanggal dan waktu
+    $date = explode(" ", $datetime)[0];
+    $time = explode(" ", $datetime)[1];
+
+    // Mengubah format tanggal
+    $date = date("Y-m-d", strtotime($date));
+
+    // Menambah 1 jam
+    $time = date("H:i:s", strtotime("+1 hour", strtotime($time)));
+
+    // Mengembalikan hasil
+    return [
+        "date" => $date,
+        "time" => $time,
+    ];
+}
+
 }
