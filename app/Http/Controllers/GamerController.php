@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Gamer;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -47,7 +49,13 @@ class GamerController extends Controller
 
         $user->gamer()->create([]);
 
-        return response()->noContent(201);
+        return response()->json([
+            'status' => Response::HTTP_OK,
+            'message' => 'Success',
+            'token_type' => 'Bearer',
+            'expires_at' => Carbon::parse(Carbon::now()->addDays(7))->toDateTimeString(),
+            'data' => $user,
+        ]);
     }
 
     /**
