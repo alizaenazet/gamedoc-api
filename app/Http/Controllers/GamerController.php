@@ -43,7 +43,7 @@ class GamerController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors(),422);
+            return response()->json($validator->errors(), 422);
         }
 
 
@@ -100,16 +100,42 @@ class GamerController extends Controller
     {
         //
     }
+    public function GetHealthReport($gamerId)
+    {
 
-    public function addFavoriteDoctor(Request $request ,string $doctorId) {
+        $gamer = Gamer::find($gamerId);
+
+        $healthReport = $gamer->healthReport;
+
+        if (!$healthReport) {
+            return response()->json()->setStatusCode(404);
+        }
+        return response()->json([
+            'fisik' => $healthReport->fisik,
+            'mental' => $healthReport->mental,
+            'sosial' => $healthReport->sosial,
+            'berhenti_bermain' => $healthReport->berhenti_bermain,
+            'motivasi_beraktivitas' => $healthReport->motivasi_beraktivitas,
+            'nyeri_tulang_sendi' => $healthReport->nyeri_tulang_sendi,
+            'keluhan_mengganggu_aktivitas' => $healthReport->keluhan_mengganggu_aktivitas,
+            'nyaman_menghabiskan_waktu_untuk_game' => $healthReport->nyaman_menghabiskan_waktu_untuk_game,
+            'kesulitan_bersosialisasi_keluhan_gamer' => $healthReport->kesulitan_bersosialisasi_keluhan_gamer,
+            'gangguan_tidur' => $healthReport->gangguan_tidur,
+            'durasi_bermain' => $healthReport->durasi_bermain,
+            'bersalah_berlebihan_bermain' => $healthReport->bersalah_berlebihan_bermain,
+        ], 200);
+    }
+
+    public function addFavoriteDoctor(Request $request, string $doctorId)
+    {
         $doctor = Doctor::find($doctorId);
         if (empty($doctor)) {
             return response()->noContent(404);
         }
         $gamer = $request->user()->gamer;
 
-        $alredyRelation = FavoriteDoctor::where('gamer_id',$gamer->id)
-            ->where('doctor_id',$doctorId)
+        $alredyRelation = FavoriteDoctor::where('gamer_id', $gamer->id)
+            ->where('doctor_id', $doctorId)
             ->get();
 
         if (count($alredyRelation) >= 1) {

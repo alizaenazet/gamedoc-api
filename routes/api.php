@@ -52,3 +52,4 @@ Route::post('/gamers/register',[GamerController::class,'create']);
 Route::middleware('auth:sanctum')->get('/gamers',[GamerController::class,'index']);
 Route::middleware('auth:sanctum')->post('gamers/doctor-favorites/{doctorid}',[GamerController::class,'addFavoriteDoctor']);
 Route::middleware('auth:sanctum')->put('gamers/healt-report',[HealthReportController::class,'updateHealthReport']);
+Route::middleware('auth:sanctum')->get('/gamers/{gamerid}/health-report', [HealthReportController::class,'GetHealthReport']);
