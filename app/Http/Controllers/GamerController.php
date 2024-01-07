@@ -16,11 +16,6 @@ class GamerController extends Controller
     {
         $user = $request->user();
 
-        if (!$user) {
-            return response()->json(['message' => 'Unauthorized'], 401);
-        }
-
-
         // Return a JSON response with the gamer data and a success message
         return response()->json([
             'id' => $user->id,
