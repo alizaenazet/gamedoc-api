@@ -49,13 +49,7 @@ class GamerController extends Controller
 
         $user->gamer()->create([]);
 
-        return response()->json([
-            'status' => Response::HTTP_OK,
-            'message' => 'Success',
-            'token_type' => 'Bearer',
-            'expires_at' => Carbon::parse(Carbon::now()->addDays(7))->toDateTimeString(),
-            'data' => $user,
-        ]);
+        return response()->noContent(201);
     }
 
     /**
@@ -109,11 +103,7 @@ class GamerController extends Controller
 
         $user->save();
 
-        return response()->json([
-            'status' => Response::HTTP_OK,
-            'message' => 'Success',
-            'data' => $user,
-        ]);
+        return response()->noContent(201);
     }
 
     /**
