@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Doctor;
-use App\Models\FavoriteDoctor;
 use App\Models\Gamer;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpFoundation\Response;
 
 class GamerController extends Controller
 {
@@ -31,9 +32,9 @@ class GamerController extends Controller
             'phone_number' => 'required|starts_with:628|min:10|max:16',
             'dob' => 'required|date',
         ]);
-        
+
         if ($validator->fails()) {
-            return response()->json($validator->errors(),422);
+            return response()->json($validator->errors(), 422);
         }
 
 
@@ -70,9 +71,39 @@ class GamerController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Gamer $gamer)
+    public function edit(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'username' => 'sometimes|required',
+            'password' => 'sometimes|min:8',
+            'email' => 'sometimes|required|email|unique:users,email,' . $id,
+            'phone_number' => 'sometimes|required|starts_with:628|min:10|max:16',
+            'dob' => 'sometimes|required|date',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        $user->name = $request->input('username');
+        $user->email = $request->input('email');
+
+        if ($request->has('password')) {
+            $user->password = bcrypt($request->input('password'));
+        }
+
+        $user->phone_number = $request->input('phone_number');
+        $user->dob = $request->input('dob');
+
+        $user->save();
+
+        return response()->noContent(201);
     }
 
     /**
@@ -89,32 +120,5 @@ class GamerController extends Controller
     public function destroy(Gamer $gamer)
     {
         //
-    }
-
-    public function addFavoriteDoctor(Request $request ,string $doctorId) {
-        $doctor = Doctor::find($doctorId);
-        if (empty($doctor)) {
-            return response()->noContent(404);
-        }
-        $gamer = $request->user()->gamer;
-
-        $alredyRelation = FavoriteDoctor::where('gamer_id',$gamer->id)
-            ->where('doctor_id',$doctorId)
-            ->get();
-
-        if (count($alredyRelation) >= 1) {
-            return response()->noContent(400);
-        }
-
-        $addRelation = FavoriteDoctor::create([
-            'doctor_id' => $doctorId,
-            'gamer_id' => $gamer->id
-        ]);
-
-        if (!empty($addRelation)) {
-            return response()->noContent(200);
-        }
-
-        return response()->noContent(500);
     }
 }
