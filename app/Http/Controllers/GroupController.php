@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\File;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class GroupController extends Controller
 {
@@ -102,6 +103,18 @@ class GroupController extends Controller
         
     }
 
+    public function showPreview(){
+        $groups = DB::table('groups')
+        ->select('id','name','description','image_url')
+        ->get();
+
+        if (empty($groups)) {
+            return response()->json([],200);
+        }
+
+        return response()->json($groups,200);
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -129,9 +142,13 @@ class GroupController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Group $group)
+    public function update(Request $request, string $groupId)
     {
-        //
+        
+        $user = $request->user();
+        $doctor = $user->doctor;
+
+
     }
 
     /**
