@@ -86,6 +86,8 @@ class TransactionController extends Controller
             'token' => $newTransactionData['token']
         ]);
 
+        return $transaction;
+
 
         
         return response()->json([

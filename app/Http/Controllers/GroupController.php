@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
-use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\File;
@@ -127,39 +126,9 @@ class GroupController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request,string $groupid)
+    public function show(Group $group)
     {
-        $user = $request->user();
-        $group = Group::find($groupid);
-        if (empty($group)) {
-            return response()->noContent(404);
-        }
-
-        $isOwned = DB::table('bougth_groups')
-        ->where('gamer_id',$user->id)
-        ->where('group_id',$groupid)
-        ->exists();
-
-        $socialMedias = DB::table('social_media')->select("id","name","url as link")->where("socialMediaable_id",$group->id)->get();
-
-        $doctors = DB::table('doctor_group')
-        ->join('groups','doctor_group.group_id','=','groups.id')
-        ->join('doctors','doctor_group.doctor_id','=','doctors.id')
-        ->join('users','doctors.user_id', '=', 'users.id')
-        ->where('groups.id', $groupid)
-        ->select('users.id as id','users.image_url as image_url','users.name as name','doctors.degree as degree','doctors.profession as profession')
-        ->get();
-
-        return response()->json([
-            "id" => $group->id,
-            "isOwned" => $isOwned,
-            "name" => $group->name,
-            "description" => $group->description,
-            "image_url" => $group->image_url,
-            "price" => $group->price,
-            "social_media" => $socialMedias,
-            "doctors" => $doctors,
-        ],200);
+        //
     }
 
     /**
