@@ -38,8 +38,8 @@ Route::post('/order/payment-handler', [TransactionController::class, 'notifHandl
 Route::middleware('auth:sanctum')->get('/groups/{groupid}/order', [TransactionController::class, 'show']);
 Route::middleware('auth:sanctum')->post('/groups/{groupid}/profile/update', [GroupController::class, 'updateImage']);
 Route::middleware('auth:sanctum')->post('/groups', [GroupController::class, 'create']);
-Route::middleware('auth:sanctum')->put('/groups/{groupid}',[GroupController::class,'create']);
 Route::middleware('auth:sanctum')->get('/gamers/groups/preview',[GroupController::class,'showPreview']);
+Route::middleware('auth:sanctum')->get('/groups/{grupid}',[GroupController::class,'show']);
 
 // Doctors
 Route::post('/doctors/register', [DoctorController::class, 'create']);
