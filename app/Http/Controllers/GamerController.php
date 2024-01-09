@@ -17,7 +17,7 @@ class GamerController extends Controller
      */
     public function index()
     {
-        //
+        
     }
 
     /**
