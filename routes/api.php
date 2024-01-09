@@ -1,14 +1,21 @@
 <?php
 
+<<<<<<< Updated upstream
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\GamerController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\HealthReportController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
+=======
+>>>>>>> Stashed changes
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\GamerController;
+use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\TransactionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +49,7 @@ Route::middleware('auth:sanctum')->put('/groups/{groupid}',[GroupController::cla
 Route::middleware('auth:sanctum')->get('/gamers/groups/preview',[GroupController::class,'showPreview']);
 
 // Doctors
+<<<<<<< Updated upstream
 Route::post('/doctors/register', [DoctorController::class, 'create']);
 Route::middleware('auth:sanctum')->post('/doctors/update/image', [DoctorController::class, 'changeImage']);
 Route::middleware('auth:sanctum')->put('/doctors', [DoctorController::class, 'update']);
@@ -56,3 +64,9 @@ Route::middleware('auth:sanctum')->post('gamers/doctor-favorites/{doctorid}', [G
 Route::middleware('auth:sanctum')->put('gamers/healt-report', [HealthReportController::class, 'updateHealthReport']);
 Route::middleware('auth:sanctum')->get('/gamers/{gamerid}/health-report', [HealthReportController::class, 'GetHealthReport']);
 Route::middleware('auth:sanctum')->patch('/gamers/edit/{id}', [GamerController::class, 'edit']);
+=======
+Route::post('/doctors/register',[DoctorController::class,'create']);
+
+// Gamers
+Route::middleware('auth:sanctum')->get('/gamers',[GamerController::class,'index']);
+>>>>>>> Stashed changes
