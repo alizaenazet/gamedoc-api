@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\File;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class GroupController extends Controller
 {
@@ -100,6 +101,18 @@ class GroupController extends Controller
 
         return response()->json("failed to update image url",500);
         
+    }
+
+    public function showPreview(){
+        $groups = DB::table('groups')
+        ->select('id','name','description','image_url')
+        ->get();
+
+        if (empty($groups)) {
+            return response()->json([],200);
+        }
+
+        return response()->json($groups,200);
     }
 
     /**
