@@ -129,9 +129,13 @@ class GroupController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Group $group)
+    public function update(Request $request, string $groupId)
     {
-        //
+        
+        $user = $request->user();
+        $doctor = $user->doctor;
+
+
     }
 
     /**
