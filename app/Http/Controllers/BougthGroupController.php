@@ -62,4 +62,5 @@ class BougthGroupController extends Controller
     {
         //
     }
+    
 }

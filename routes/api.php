@@ -38,8 +38,8 @@ Route::post('/order/payment-handler', [TransactionController::class, 'notifHandl
 Route::middleware('auth:sanctum')->get('/groups/{groupid}/order', [TransactionController::class, 'show']);
 Route::middleware('auth:sanctum')->post('/groups/{groupid}/profile/update', [GroupController::class, 'updateImage']);
 Route::middleware('auth:sanctum')->post('/groups', [GroupController::class, 'create']);
+Route::middleware('auth:sanctum')->put('/groups/{groupid}',[GroupController::class,'create']);
 Route::middleware('auth:sanctum')->get('/gamers/groups/preview',[GroupController::class,'showPreview']);
-Route::middleware('auth:sanctum')->get('/groups/{grupid}',[GroupController::class,'show']);
 
 // Doctors
 Route::post('/doctors/register', [DoctorController::class, 'create']);
@@ -47,7 +47,7 @@ Route::middleware('auth:sanctum')->post('/doctors/update/image', [DoctorControll
 Route::middleware('auth:sanctum')->put('/doctors', [DoctorController::class, 'update']);
 Route::middleware('auth:sanctum')->get('/doctors', [DoctorController::class, 'index']);
 Route::middleware('auth:sanctum')->get('/doctors/{doctorid}/preview', [DoctorController::class, 'show']);
-Route::post('/doctors/register',[DoctorController::class,'create']);
+Route::middleware('auth:sanctum')->post('/doctors/register',[DoctorController::class,'create']);
 
 // Gamer
 Route::post('/gamers/register', [GamerController::class, 'create']);
@@ -56,3 +56,5 @@ Route::middleware('auth:sanctum')->post('gamers/doctor-favorites/{doctorid}', [G
 Route::middleware('auth:sanctum')->put('gamers/healt-report', [HealthReportController::class, 'updateHealthReport']);
 Route::middleware('auth:sanctum')->get('/gamers/{gamerid}/health-report', [HealthReportController::class, 'GetHealthReport']);
 Route::middleware('auth:sanctum')->patch('/gamers/edit/{id}', [GamerController::class, 'edit']);
+Route::middleware('auth:sanctum')->get('/gamers/{gamerid}/groups/preview/bought', [GamerController::class, 'getBoughtGroupListPreview']);
+Route::middleware('auth:sanctum')->post('/gamers/{gamerid}/groups/{groupid}/buy', [GamerController::class, 'buyGroup']);

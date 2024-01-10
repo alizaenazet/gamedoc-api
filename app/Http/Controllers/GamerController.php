@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Gamer;
 use App\Models\User;
+use App\Models\BoughtGroup;
+use App\Models\BougthGroup;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +17,7 @@ class GamerController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
         $user = $request->user();
 
@@ -29,8 +31,6 @@ class GamerController extends Controller
             'image_url' => $user->image_url,
         ], 200);
     }
-
-
 
     /**
      * Show the form for creating a new resource.
@@ -132,5 +132,31 @@ class GamerController extends Controller
     public function destroy(Gamer $gamer)
     {
         //
+    } 
+    public function getBoughtGroupListPreview($gamerId)
+    {
+        // Logic untuk mendapatkan daftar grup yang dibeli oleh gamer dengan ID tertentu
+        $boughtGroups = BougthGroup::where('gamer_id', $gamerId)->get();
+
+        if ($boughtGroups->count() > 0) {
+            // Jika berhasil, response dengan status code 200 OK
+            return response()->json($boughtGroups, 200);
+        } else {
+            // Jika tidak ada data, response dengan status code 200 OK dan pesan empty
+            return response()->json([], 200);
+        }
+    }
+
+    public function buyGroup($gamerId, $groupId)
+    {
+        // Logic untuk menambahkan grup yang dibeli oleh gamer ke dalam database
+        BougthGroup::create([
+            'gamer_id' => $gamerId,
+            'group_id' => $groupId,
+            // tambahkan kolom lain sesuai kebutuhan
+        ]);
+
+        // Response sukses dengan status code 200 OK
+        return response()->json(['message' => 'Group bought successfully'], 200);
     }
 }
