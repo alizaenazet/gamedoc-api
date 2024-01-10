@@ -2,6 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Http\Controllers\GamerController;
+use App\Models\Doctor;
+use App\Models\Gamer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -20,11 +23,17 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $role = ["doctor","gamer"][random_int(0,1)];
+        $name = fake()->name();
         return [
-            'name' => fake()->name(),
+            'name' => $name,
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
+            'password' =>  Hash::make('tes12345'),
+            'phone_number' => fake()->phoneNumber(),
+            'image_url' => fake()->imageUrl(500,500),
+            'dob' => fake()->date(),
+            'role' => $role,
             'remember_token' => Str::random(10),
         ];
     }

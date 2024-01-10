@@ -11,27 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+        Schema::create('groups', function (Blueprint $table) {
+            $table->uuid('id')->primary()->default(DB::raw('(UUID())'));;
             $table->string('name');
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->string('phone_number');
+            $table->string('description')->nullable();
             $table->string('image_url')->nullable();
-            $table->date('dob');
-            $table->enum('role',['doctor','gamer']);
-            $table->rememberToken();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->decimal('price',10,2);
             $table->timestamps();
         });
     }
 
-    
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('groups');
     }
 };
