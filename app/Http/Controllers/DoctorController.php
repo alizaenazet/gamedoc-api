@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\File;
 use App\Enums\Proffesion;
+use App\Models\Group;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -39,7 +40,7 @@ class DoctorController extends Controller
      */
     public function create(Request $request)
     {
-        
+
         $validator = Validator::make($request->all(), [
             'username' => 'required',
             'password' => 'required:min:8',
@@ -60,10 +61,10 @@ class DoctorController extends Controller
         }else {
             $request['services'] = $request['services'][0];
         }
-        
+
         $user = User::create([
             'name' => $request['username'],
-            'email' => $request['email'],   
+            'email' => $request['email'],
             'password' => $request['password'],
             'phone_number' => $request['phone_number'],
             'dob' => $request['dob'],
@@ -81,7 +82,7 @@ class DoctorController extends Controller
     }
 
     public function changeImage(Request $request) {
-        
+
         $validator = Validator::make($request->all(), [
             'image_file' => [
                 'required',
@@ -93,7 +94,7 @@ class DoctorController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(),422);
         }
-        
+
         $user = $request->user();
         if (!empty($group->image_url)) {
             $deleteImagePath = str_replace("/storage/",'',$user->image_url);
@@ -106,7 +107,7 @@ class DoctorController extends Controller
         $imageUrl = '/storage/'. $file->storePublicly('users', 'public');
 
         $user->image_url = $imageUrl;
-     
+
         if ($user->save()) {
             return response()->noContent(204);
         }
@@ -190,11 +191,11 @@ class DoctorController extends Controller
         if (!empty($validated['profession'])) {
             $doctor->profession = $validated['profession'];
         }
-        
+
         if (!empty($validated['services'])) {
             $doctor->service = $validated['services'];
         }
-        
+
         if (!empty($validated['email'])) {
             $user->email = $validated['email'];
         }
@@ -214,7 +215,7 @@ class DoctorController extends Controller
         if (!empty($validated['social_media'])) {
             $socialMediaList = $doctor->socialMedias;
 
-            for ($i=0; $i < count($validated['social_media']); $i++) { 
+            for ($i=0; $i < count($validated['social_media']); $i++) {
                 $socialMedia = $validated['social_media'][$i];
                 if ($socialMediaList->contains('name',$socialMedia['name'])) {
                     DB::table('social_media')
@@ -229,7 +230,7 @@ class DoctorController extends Controller
             }
 
         }
-        
+
         if (!$doctor->save()) {
             return response()->noContent(500);
         }
@@ -245,5 +246,16 @@ class DoctorController extends Controller
     public function destroy(Doctor $doctor)
     {
         //
+    }
+    public function getDoctorGroupListPreview()
+    {
+        // Mengambil semua data dari model DoctorGroup
+        $doctorGroups = Group::all();
+
+        if (count($doctorGroups) > 0) {
+            return response()->json($doctorGroups, 200);
+        } else {
+            return response()->json([], 200);
+        }
     }
 }

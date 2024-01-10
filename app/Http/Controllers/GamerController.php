@@ -19,7 +19,17 @@ class GamerController extends Controller
      */
     public function index(Request $request)
     {
-        //
+        $user = $request->user();
+
+        // Return a JSON response with the gamer data and a success message
+        return response()->json([
+            'id' => $user->id,
+            'name' => $user->name,
+            'dob' => $user->dob,
+            'email' => $user->email,
+            'phone_number' => $user->phone_number,
+            'image_url' => $user->image_url,
+        ], 200);
     }
 
     /**
@@ -122,6 +132,32 @@ class GamerController extends Controller
     public function destroy(Gamer $gamer)
     {
         //
+    } 
+    public function getBoughtGroupListPreview($gamerId)
+    {
+        // Logic untuk mendapatkan daftar grup yang dibeli oleh gamer dengan ID tertentu
+        $boughtGroups = BougthGroup::where('gamer_id', $gamerId)->get();
+
+        if ($boughtGroups->count() > 0) {
+            // Jika berhasil, response dengan status code 200 OK
+            return response()->json($boughtGroups, 200);
+        } else {
+            // Jika tidak ada data, response dengan status code 200 OK dan pesan empty
+            return response()->json([], 200);
+        }
+    }
+
+    public function buyGroup($gamerId, $groupId)
+    {
+        // Logic untuk menambahkan grup yang dibeli oleh gamer ke dalam database
+        BougthGroup::create([
+            'gamer_id' => $gamerId,
+            'group_id' => $groupId,
+            // tambahkan kolom lain sesuai kebutuhan
+        ]);
+
+        // Response sukses dengan status code 200 OK
+        return response()->json(['message' => 'Group bought successfully'], 200);
     }
 
     public function getBoughtGroupListPreview($gamerId)
