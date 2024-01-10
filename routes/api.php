@@ -56,3 +56,6 @@ Route::middleware('auth:sanctum')->post('gamers/doctor-favorites/{doctorid}', [G
 Route::middleware('auth:sanctum')->put('gamers/healt-report', [HealthReportController::class, 'updateHealthReport']);
 Route::middleware('auth:sanctum')->get('/gamers/{gamerid}/health-report', [HealthReportController::class, 'GetHealthReport']);
 Route::middleware('auth:sanctum')->patch('/gamers/edit/{id}', [GamerController::class, 'edit']);
+
+Route::get('/gamers/{gamerid}/groups/preview/bought', [GamerController::class, 'getBoughtGroupListPreview']);
+Route::post('/gamers/{gamerid}/groups/{groupid}/buy', [GamerController::class, 'buyGroup']);
