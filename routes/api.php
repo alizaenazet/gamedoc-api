@@ -40,6 +40,7 @@ Route::middleware('auth:sanctum')->post('/groups/{groupid}/profile/update', [Gro
 Route::middleware('auth:sanctum')->post('/groups', [GroupController::class, 'create']);
 Route::middleware('auth:sanctum')->put('/groups/{groupid}',[GroupController::class,'create']);
 Route::middleware('auth:sanctum')->get('/gamers/groups/preview',[GroupController::class,'showPreview']);
+Route::middleware('auth:sanctum')->get('/groups/{grupid}',[GroupController::class,'show']);
 
 // Doctors
 Route::post('/doctors/register', [DoctorController::class, 'create']);
@@ -47,6 +48,7 @@ Route::middleware('auth:sanctum')->post('/doctors/update/image', [DoctorControll
 Route::middleware('auth:sanctum')->put('/doctors', [DoctorController::class, 'update']);
 Route::middleware('auth:sanctum')->get('/doctors', [DoctorController::class, 'index']);
 Route::middleware('auth:sanctum')->get('/doctors/{doctorid}/preview', [DoctorController::class, 'show']);
+Route::middleware('auth:sanctum')->get('/doctors/{doctorid}/groups/preview', [DoctorController::class, 'getDoctorGroupListPreview']);
 Route::middleware('auth:sanctum')->post('/doctors/register',[DoctorController::class,'create']);
 
 // Gamer
