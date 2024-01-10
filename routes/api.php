@@ -49,13 +49,12 @@ Route::middleware('auth:sanctum')->get('/gamers/groups/preview',[GroupController
 Route::middleware('auth:sanctum')->get('/groups/{grupid}',[GroupController::class,'show']);
 
 // Doctors
-<<<<<<< Updated upstream
 Route::post('/doctors/register', [DoctorController::class, 'create']);
 Route::middleware('auth:sanctum')->post('/doctors/update/image', [DoctorController::class, 'changeImage']);
 Route::middleware('auth:sanctum')->put('/doctors', [DoctorController::class, 'update']);
 Route::middleware('auth:sanctum')->get('/doctors', [DoctorController::class, 'index']);
 Route::middleware('auth:sanctum')->get('/doctors/{doctorid}/preview', [DoctorController::class, 'show']);
-
+Route::post('/doctors/register',[DoctorController::class,'create']);
 
 // Gamer
 Route::post('/gamers/register', [GamerController::class, 'create']);
@@ -64,9 +63,3 @@ Route::middleware('auth:sanctum')->post('gamers/doctor-favorites/{doctorid}', [G
 Route::middleware('auth:sanctum')->put('gamers/healt-report', [HealthReportController::class, 'updateHealthReport']);
 Route::middleware('auth:sanctum')->get('/gamers/{gamerid}/health-report', [HealthReportController::class, 'GetHealthReport']);
 Route::middleware('auth:sanctum')->patch('/gamers/edit/{id}', [GamerController::class, 'edit']);
-=======
-Route::post('/doctors/register',[DoctorController::class,'create']);
-
-// Gamers
-Route::middleware('auth:sanctum')->get('/gamers',[GamerController::class,'index']);
->>>>>>> Stashed changes
