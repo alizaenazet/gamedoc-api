@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Gamer;
 use App\Models\User;
-use App\Models\BoughtGroup;
 use App\Models\BougthGroup;
+use App\Models\Group;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +17,7 @@ class GamerController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = $request->user();
 
@@ -158,5 +158,64 @@ class GamerController extends Controller
 
         // Response sukses dengan status code 200 OK
         return response()->json(['message' => 'Group bought successfully'], 200);
+    }
+
+    public function getBoughtGroupListPreview($gamerId)
+    {
+        // Logic untuk mendapatkan daftar grup yang dibeli oleh gamer dengan ID tertentu
+        $boughtGroups = BougthGroup::where('gamer_id', $gamerId)->get();
+
+        if ($boughtGroups->count() > 0) {
+            // Jika berhasil, response dengan status code 200 OK
+            return response()->json($boughtGroups, 200);
+        } else {
+            // Jika tidak ada data, response dengan status code 200 OK dan pesan empty
+            return response()->json([], 200);
+        }
+    }
+
+    public function buyGroup($gamerId, $groupId)
+    {
+        // Logic untuk menambahkan grup yang dibeli oleh gamer ke dalam database
+        BougthGroup::create([
+            'gamer_id' => $gamerId,
+            'group_id' => $groupId,
+            // tambahkan kolom lain sesuai kebutuhan
+        ]);
+
+        // Response sukses dengan status code 200 OK
+        return response()->json(['message' => 'Group bought successfully'], 200);
+    }
+
+    public function showGamersBoughtGroupDetail(string $gamerid, string $grupid)
+    {
+        // Mengambil data dari database
+        $group = Group::find($grupid);
+
+        // Jika grup tidak ditemukan
+        if (!$group) {
+            return response()->json(['error' => 'Not Found'], 404);
+        }
+
+        // Contoh data yang akan dikembalikan
+        $data = [
+            'id' => $group->id,
+            'name' => $group->name,
+            'description' => $group->description,
+            'image_url' => $group->image_url,
+            'price' => $group->price,
+            'social_media' => $group->social_media,
+            'doctors' => $group->doctors->pluck('name'),
+        ];
+
+        // Pengecekan untuk Unauthorized
+        $testUnauthorized = true;
+
+        if ($testUnauthorized) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        // Jika tidak ada Unauthorized, kembalikan data dengan status 200
+        return response()->json($data, 200);
     }
 }
