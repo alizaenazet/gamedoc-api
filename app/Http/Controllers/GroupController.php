@@ -148,7 +148,7 @@ class GroupController extends Controller
         ->where('groups.id', $groupid)
         ->select('users.id as id','users.image_url as image_url','users.name as name','doctors.degree as degree','doctors.profession as profession')
         ->get();
-        
+
         return response()->json([
             "id" => $group->id,
             "isOwned" => $isOwned,

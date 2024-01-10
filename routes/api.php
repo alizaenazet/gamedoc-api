@@ -1,14 +1,14 @@
 <?php
 
-use App\Http\Controllers\DoctorController;
-use App\Http\Controllers\GamerController;
-use App\Http\Controllers\GroupController;
-use App\Http\Controllers\HealthReportController;
-use App\Http\Controllers\TransactionController;
-use App\Http\Controllers\UserController;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\GamerController;
+use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\GroupController;
+use App\Http\Controllers\HealthReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,9 +49,7 @@ Route::middleware('auth:sanctum')->put('/doctors', [DoctorController::class, 'up
 Route::middleware('auth:sanctum')->get('/doctors', [DoctorController::class, 'index']);
 Route::middleware('auth:sanctum')->get('/doctors/{doctorid}/preview', [DoctorController::class, 'show']);
 Route::middleware('auth:sanctum')->get('/doctors/{doctorid}/groups/preview', [DoctorController::class, 'getDoctorGroupListPreview']);
-
-
-
+Route::middleware('auth:sanctum')->post('/doctors/register',[DoctorController::class,'create']);
 
 // Gamer
 Route::post('/gamers/register', [GamerController::class, 'create']);
@@ -60,3 +58,5 @@ Route::middleware('auth:sanctum')->post('gamers/doctor-favorites/{doctorid}', [G
 Route::middleware('auth:sanctum')->put('gamers/healt-report', [HealthReportController::class, 'updateHealthReport']);
 Route::middleware('auth:sanctum')->get('/gamers/{gamerid}/health-report', [HealthReportController::class, 'GetHealthReport']);
 Route::middleware('auth:sanctum')->patch('/gamers/edit/{id}', [GamerController::class, 'edit']);
+Route::middleware('auth:sanctum')->get('/gamers/{gamerid}/groups/preview/bought', [GamerController::class, 'getBoughtGroupListPreview']);
+Route::middleware('auth:sanctum')->post('/gamers/{gamerid}/groups/{groupid}/buy', [GamerController::class, 'buyGroup']);

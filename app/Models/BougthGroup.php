@@ -19,4 +19,14 @@ class BougthGroup extends Model
     // public function gamer() : BelongsToMany {
     //    return $this->BelongsToMany(Gamer::class);
     // }
+    // tambahkan relasi ke model Gamer dan Group jika diperlukan
+    public function gamer()
+    {
+        return $this->belongsTo(Gamer::class, 'gamer_id');
+    }
+
+    public function group()
+    {
+        return $this->belongsTo(Group::class, 'group_id');
+    }
 }
