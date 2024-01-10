@@ -81,7 +81,7 @@ class DoctorController extends Controller
         return response()->noContent(201);
     }
 
-    public function changeImage(Request $request) {
+    public function changeImage(Request $request, Group $group) {
 
         $validator = Validator::make($request->all(), [
             'image_file' => [
@@ -258,4 +258,5 @@ class DoctorController extends Controller
             return response()->json([], 200);
         }
     }
+    
 }
