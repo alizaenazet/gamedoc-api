@@ -1,14 +1,14 @@
 <?php
 
-use App\Http\Controllers\DoctorController;
-use App\Http\Controllers\GamerController;
-use App\Http\Controllers\GroupController;
-use App\Http\Controllers\HealthReportController;
-use App\Http\Controllers\TransactionController;
-use App\Http\Controllers\UserController;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\GamerController;
+use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\GroupController;
+use App\Http\Controllers\HealthReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,7 +47,7 @@ Route::middleware('auth:sanctum')->post('/doctors/update/image', [DoctorControll
 Route::middleware('auth:sanctum')->put('/doctors', [DoctorController::class, 'update']);
 Route::middleware('auth:sanctum')->get('/doctors', [DoctorController::class, 'index']);
 Route::middleware('auth:sanctum')->get('/doctors/{doctorid}/preview', [DoctorController::class, 'show']);
-
+Route::post('/doctors/register',[DoctorController::class,'create']);
 
 // Gamer
 Route::post('/gamers/register', [GamerController::class, 'create']);
