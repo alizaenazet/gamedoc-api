@@ -30,6 +30,8 @@ class GamerController extends Controller
         ], 200);
     }
 
+
+
     /**
      * Show the form for creating a new resource.
      */
