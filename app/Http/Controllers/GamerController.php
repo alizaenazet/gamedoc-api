@@ -19,7 +19,17 @@ class GamerController extends Controller
      */
     public function index()
     {
-        //
+        $user = $request->user();
+
+        // Return a JSON response with the gamer data and a success message
+        return response()->json([
+            'id' => $user->id,
+            'name' => $user->name,
+            'dob' => $user->dob,
+            'email' => $user->email,
+            'phone_number' => $user->phone_number,
+            'image_url' => $user->image_url,
+        ], 200);
     }
 
     /**
