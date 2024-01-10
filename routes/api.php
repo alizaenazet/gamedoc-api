@@ -1,14 +1,5 @@
 <?php
 
-<<<<<<< Updated upstream
-use App\Http\Controllers\DoctorController;
-use App\Http\Controllers\GamerController;
-use App\Http\Controllers\GroupController;
-use App\Http\Controllers\HealthReportController;
-use App\Http\Controllers\TransactionController;
-use App\Http\Controllers\UserController;
-=======
->>>>>>> Stashed changes
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -16,6 +7,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\GamerController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\GroupController;
+use App\Http\Controllers\HealthReportController;
 
 /*
 |--------------------------------------------------------------------------
