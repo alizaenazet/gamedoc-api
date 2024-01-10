@@ -17,7 +17,7 @@ class GamerController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = $request->user();
 
@@ -132,7 +132,7 @@ class GamerController extends Controller
     public function destroy(Gamer $gamer)
     {
         //
-    } 
+    }
     public function getBoughtGroupListPreview($gamerId)
     {
         // Logic untuk mendapatkan daftar grup yang dibeli oleh gamer dengan ID tertentu

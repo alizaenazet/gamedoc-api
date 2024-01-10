@@ -29,7 +29,7 @@ class GroupController extends Controller
             'description' => 'nullable',
             'price' => 'required',
             'social_media' => 'required' ,
-            'social_media.*.name' => 'required', 
+            'social_media.*.name' => 'required',
             'social_media.*.url' => 'required',
             "doctors" => 'nullable'
         ]);
@@ -37,17 +37,17 @@ class GroupController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(),422);
         }
-        
+
         $user = $request->user();
-        
+
         $group = Group::create([
             'name' => $request['name'],
             'description' => $request['description'],
-            'price' => $request['price'] 
+            'price' => $request['price']
         ]);
 
         $soscialMediaLength = count($request['social_media']);
-        
+
         if (!empty($request['social_media']) && $soscialMediaLength > 0) {
             $group->socialMedias()->createMany($request['social_media']);
         }
@@ -100,7 +100,7 @@ class GroupController extends Controller
         }
 
         return response()->json("failed to update image url",500);
-        
+
     }
 
     public function showPreview(){
@@ -174,7 +174,7 @@ class GroupController extends Controller
      */
     public function update(Request $request, string $groupId)
     {
-        
+
         $user = $request->user();
         $doctor = $user->doctor;
 
@@ -187,5 +187,16 @@ class GroupController extends Controller
     public function destroy(Group $group)
     {
         //
+    }
+    public function deleteDoctorGroup($groupId)
+    {
+        $group = Group::find($groupId);
+
+        if (!$group) {
+            return response()->json(['message' => 'Incorrect request body value', 'errors' => ['groupid' => 'Unknown group']], 422);
+        }
+        $group->delete();
+
+        return response()->json(null, 204);
     }
 }
