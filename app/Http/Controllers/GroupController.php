@@ -29,26 +29,26 @@ class GroupController extends Controller
             'name' => 'required',
             'description' => 'nullable',
             'price' => 'required',
-            'social_media' => 'required' ,
-            'social_media.*.name' => 'required', 
+            'social_media' => 'required',
+            'social_media.*.name' => 'required',
             'social_media.*.url' => 'required',
             "doctors" => 'nullable'
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors(),422);
+            return response()->json($validator->errors(), 422);
         }
-        
+
         $user = $request->user();
-        
+
         $group = Group::create([
             'name' => $request['name'],
             'description' => $request['description'],
-            'price' => $request['price'] 
+            'price' => $request['price']
         ]);
 
         $soscialMediaLength = count($request['social_media']);
-        
+
         if (!empty($request['social_media']) && $soscialMediaLength > 0) {
             $group->socialMedias()->createMany($request['social_media']);
         }
@@ -58,24 +58,25 @@ class GroupController extends Controller
             $doctorList = $request['doctors'];
             $doctorList[$invitedDoctorLength] = $user->doctor->id;
             $group->doctors()->attach($doctorList);
-        }else {
+        } else {
             $group->doctors()->attach($user->doctor->id);
         }
 
         return response()->noContent(204);
     }
 
-    public function updateImage(Request $request,string $groupid,) {
+    public function updateImage(Request $request, string $groupid,)
+    {
         $validator = Validator::make($request->all(), [
             'image_file' => [
                 'required',
-                File::types(['png','jpg','jpeg'])
+                File::types(['png', 'jpg', 'jpeg'])
                     ->max('25mb')
             ]
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors(),422);
+            return response()->json($validator->errors(), 422);
         }
 
         $group = Group::find($groupid);
@@ -84,14 +85,14 @@ class GroupController extends Controller
         }
 
         if (!empty($group->image_url)) {
-            $deleteImagePath = str_replace("/storage/",'',$group->image_url);
+            $deleteImagePath = str_replace("/storage/", '', $group->image_url);
             if (!Storage::disk('public')->delete($deleteImagePath)) {
-                return response()->json("failed to delete existing image",500);
+                return response()->json("failed to delete existing image", 500);
             }
         }
 
         $file = $request->file('image_file');
-        $imageUrl = '/storage/'. $file->storePublicly('groups', 'public');
+        $imageUrl = '/storage/' . $file->storePublicly('groups', 'public');
 
 
         $group->image_url = $imageUrl;
@@ -100,20 +101,20 @@ class GroupController extends Controller
             return response()->noContent(204);
         }
 
-        return response()->json("failed to update image url",500);
-        
+        return response()->json("failed to update image url", 500);
     }
 
-    public function showPreview(){
+    public function showPreview()
+    {
         $groups = DB::table('groups')
-        ->select('id','name','description','image_url')
-        ->get();
+            ->select('id', 'name', 'description', 'image_url')
+            ->get();
 
         if (empty($groups)) {
-            return response()->json([],200);
+            return response()->json([], 200);
         }
 
-        return response()->json($groups,200);
+        return response()->json($groups, 200);
     }
 
     /**
@@ -127,7 +128,7 @@ class GroupController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request,string $groupid)
+    public function show(Request $request, string $groupid)
     {
         $user = $request->user();
         $group = Group::find($groupid);
@@ -136,19 +137,19 @@ class GroupController extends Controller
         }
 
         $isOwned = DB::table('bougth_groups')
-        ->where('gamer_id',$user->id)
-        ->where('group_id',$groupid)
-        ->exists();
+            ->where('gamer_id', $user->id)
+            ->where('group_id', $groupid)
+            ->exists();
 
-        $socialMedias = DB::table('social_media')->select("id","name","url as link")->where("socialMediaable_id",$group->id)->get();
+        $socialMedias = DB::table('social_media')->select("id", "name", "url as link")->where("socialMediaable_id", $group->id)->get();
 
         $doctors = DB::table('doctor_group')
-        ->join('groups','doctor_group.group_id','=','groups.id')
-        ->join('doctors','doctor_group.doctor_id','=','doctors.id')
-        ->join('users','doctors.user_id', '=', 'users.id')
-        ->where('groups.id', $groupid)
-        ->select('users.id as id','users.image_url as image_url','users.name as name','doctors.degree as degree','doctors.profession as profession')
-        ->get();
+            ->join('groups', 'doctor_group.group_id', '=', 'groups.id')
+            ->join('doctors', 'doctor_group.doctor_id', '=', 'doctors.id')
+            ->join('users', 'doctors.user_id', '=', 'users.id')
+            ->where('groups.id', $groupid)
+            ->select('users.id as id', 'users.image_url as image_url', 'users.name as name', 'doctors.degree as degree', 'doctors.profession as profession')
+            ->get();
 
         return response()->json([
             "id" => $group->id,
@@ -159,7 +160,7 @@ class GroupController extends Controller
             "price" => $group->price,
             "social_media" => $socialMedias,
             "doctors" => $doctors,
-        ],200);
+        ], 200);
     }
 
     /**
@@ -175,11 +176,9 @@ class GroupController extends Controller
      */
     public function update(Request $request, string $groupId)
     {
-        
+
         $user = $request->user();
         $doctor = $user->doctor;
-
-
     }
 
     /**
