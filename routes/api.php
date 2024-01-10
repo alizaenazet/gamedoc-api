@@ -47,6 +47,9 @@ Route::middleware('auth:sanctum')->post('/doctors/update/image', [DoctorControll
 Route::middleware('auth:sanctum')->put('/doctors', [DoctorController::class, 'update']);
 Route::middleware('auth:sanctum')->get('/doctors', [DoctorController::class, 'index']);
 Route::middleware('auth:sanctum')->get('/doctors/{doctorid}/preview', [DoctorController::class, 'show']);
+Route::middleware('auth:sanctum')->get('/doctors/{doctorid}/groups/preview', [DoctorController::class, 'getDoctorGroupListPreview']);
+
+
 
 
 // Gamer
